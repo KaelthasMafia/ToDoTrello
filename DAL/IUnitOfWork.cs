@@ -8,7 +8,7 @@ namespace DAL
 {
     public interface IUnitOfWork : IDisposable
     {
-        DbContext Context { get; }
+        ToDoTrelloContext Context { get; }
 
         void Commit();
     }

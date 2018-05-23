@@ -8,9 +8,9 @@ namespace DAL
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly UnitOfWork unitOfWork;
 
-        public Repository(IUnitOfWork unitOfWork)
+        public Repository(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

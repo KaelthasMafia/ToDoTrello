@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BOL;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
     public class UnitOfWork
     {
-        public DbContext Context { get; }
+        public ToDoTrelloContext Context { get; }
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(ToDoTrelloContext context)
         {
             Context = context;
         }

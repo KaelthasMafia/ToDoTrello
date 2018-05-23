@@ -9,9 +9,7 @@ namespace BOL
     public class ToDoTrelloContext : DbContext
     {
         public ToDoTrelloContext(DbContextOptions<ToDoTrelloContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         public DbSet<User> Users { get; set; }
 
