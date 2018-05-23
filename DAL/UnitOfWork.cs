@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public ToDoTrelloContext Context { get; }
 

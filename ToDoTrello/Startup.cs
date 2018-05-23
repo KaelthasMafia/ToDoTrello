@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BOL;
+using BOL.Models;
+using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +29,7 @@ namespace ToDoTrello
 
             services.AddDbContext<ToDoTrelloContext>(options =>
                 options.UseSqlServer(connection, optionsBuilder => optionsBuilder.MigrationsAssembly("ToDoTrello")));
-
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
 

@@ -12,16 +12,12 @@ using ToDoTrello.Models;
 
 namespace ToDoTrello.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        //private SubStatusDb db;
-        public HomeController(ToDoTrelloContext context)
-        {
-            //db = new SubStatusDb(context);
-        }
+        public HomeController(ToDoTrelloContext context) : base (context)
+        { }
         public IActionResult Index()
         {
-            //db.Add(new SubStatus(){SubStatusName = "To Do"});
             return View();
         }
 
