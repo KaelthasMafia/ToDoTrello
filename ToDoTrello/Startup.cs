@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BOL;
 using BOL.Models;
 using DAL;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,10 @@ namespace ToDoTrello
             services.AddDbContext<ToDoTrelloContext>(options =>
                 options.UseSqlServer(connection, optionsBuilder => optionsBuilder.MigrationsAssembly("ToDoTrello")));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+            });
             services.AddMvc();
         }
 
@@ -47,6 +52,8 @@ namespace ToDoTrello
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
