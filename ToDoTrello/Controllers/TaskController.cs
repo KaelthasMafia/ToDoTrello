@@ -22,14 +22,16 @@ namespace ToDoTrello.Controllers
             {
                 foreach (var task in tasks)
                 {
-                    int priorityId = db.TaskDb.Get(x => x.TaskId == task.TaskId).FirstOrDefault().TaskId;
-                    task.Priority = db.PriorityDb.Get(x => x.PriorityId == priorityId).FirstOrDefault();
+                    task.Priority = db.PriorityDb.Get(x => x.PriorityId == task.PriorityId).FirstOrDefault();
+                    task.User = db.UserDb.Get(x => x.UserId == task.UserId).FirstOrDefault();
                 }
-
+                ViewBag.Count = "notnull";
+            }
+            else
+            {
                 ViewBag.Count = "";
             }
-            ViewBag.Count = "notnull";
-            return View();
+            return View(tasks);
         }
 
         [HttpPost]
@@ -41,7 +43,7 @@ namespace ToDoTrello.Controllers
         [HttpGet]
         public IActionResult CreateTask()
         {
-            return View();
+            return RedirectToAction("TasksList");
         }
     }
 }
