@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using BLL.Db;
 using BOL;
 using BOL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoTrello.Models;
 
 namespace ToDoTrello.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         public HomeController(ToDoTrelloContext context) : base (context)
