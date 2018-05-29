@@ -44,7 +44,6 @@ namespace DAL
         public void Update(T entity)
         {
             unitOfWork.Context.Entry(entity).State = EntityState.Modified;
-            unitOfWork.Context.Set<T>().Attach(entity);
             unitOfWork.Commit();
         }
     }

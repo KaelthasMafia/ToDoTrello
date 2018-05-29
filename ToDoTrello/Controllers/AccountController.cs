@@ -37,8 +37,14 @@ namespace ToDoTrello.Controllers
             if (ModelState.IsValid)
             {
                 User user = db.UserDb.Get().FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
-                if(user != null)
+                if (user != null)
                 {
+                    Role role = db.RoleDb.Get().FirstOrDefault(x => x.RoleId == user.RoleId);
+                    if (role != null)
+                    {
+                        user.RoleId = role.RoleId;
+                        user.Role = role;
+                    }
                     Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
@@ -57,13 +63,7 @@ namespace ToDoTrello.Controllers
                 User user = db.UserDb.Get().FirstOrDefault(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    Role role = db.RoleDb.Get().FirstOrDefault(x => x.RoleName == "User");
-                    if (role != null)
-                    {
-                        user.RoleId = role.RoleId;
-                        user.Role = role;
-                    }
-
+                    Role role = db.RoleDb.Get().FirstOrDefault(x => x.RoleName == "Blocked");
                     user = new User()
                     {
                         Email = model.Email,
@@ -71,7 +71,13 @@ namespace ToDoTrello.Controllers
                         FirstName = model.FirstName,
                         LastName = model.LastName
                     };
+                    if (role != null)
+                    {
+                        user.RoleId = role.RoleId;
+                        user.Role = role;
+                    }
                     db.UserDb.Add(user);
+                    Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -91,6 +97,12 @@ namespace ToDoTrello.Controllers
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
     }
 }
