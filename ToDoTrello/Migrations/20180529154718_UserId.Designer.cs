@@ -11,9 +11,10 @@ using System;
 namespace ToDoTrello.Migrations
 {
     [DbContext(typeof(ToDoTrelloContext))]
-    partial class ToDoTrelloContextModelSnapshot : ModelSnapshot
+    [Migration("20180529154718_UserId")]
+    partial class UserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
