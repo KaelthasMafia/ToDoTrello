@@ -15,7 +15,9 @@ namespace BOL
 
         public DbSet<Task> Tasks { get; set; }
 
-        public DbSet<SubStatus> SubStatuses { get; set; }
+        public DbSet<Work> Works { get; set; }
+
+        public DbSet<Stage> Stages { get; set; }
 
         public DbSet<Subscribe> Subscribes { get; set; }
 

@@ -13,7 +13,6 @@ namespace BLL.Db
             ProjectDb = new ProjectDb(context);
             RoleDb = new RoleDb(context);
             SubscribeDb = new SubscribeDb(context);
-            SubStatusDb = new SubStatusDb(context);
             TaskDb = new TaskDb(context);
             UserDb = new UserDb(context);
         }
@@ -25,8 +24,6 @@ namespace BLL.Db
         public RoleDb RoleDb { get; set; }
 
         public SubscribeDb SubscribeDb { get; set; }
-
-        public SubStatusDb SubStatusDb { get; set; }
 
         public TaskDb TaskDb { get; set; }
 

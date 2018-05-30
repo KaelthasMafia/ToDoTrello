@@ -21,8 +21,8 @@ namespace BOL.Models
 
         public bool IsArchived { get; set; }
 
-        public virtual List<Task> Tasks { get; set; }
-
         public virtual List<Subscribe> Subscribes { get; set; }
+
+        public virtual List<Stage> Stages { get; set; }
     }
 }

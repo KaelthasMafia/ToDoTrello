@@ -22,14 +22,12 @@ namespace BOL.Models
 
         public int PriorityId { get; set; }
 
-        public int ProjectId { get; set; }
-
-        public int UserId { get; set; }
+        public int StageId { get; set; }
 
         public virtual Priority Priority { get; set; }
 
-        public virtual Project Project { get; set; }
+        public virtual Stage Stage { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual List<Work> Works { get; set; }
     }
 }

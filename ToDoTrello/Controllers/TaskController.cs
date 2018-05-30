@@ -14,25 +14,25 @@ namespace ToDoTrello.Controllers
         public TaskController(ToDoTrelloContext context) : base(context)
         { }
 
-        [HttpGet]
-        public IActionResult TasksList()
-        {
-            List<Task> tasks = db.TaskDb.Get().Where(x=>x.User.Email == User.Identity.Name).ToList();
-            if (tasks.Count != 0)
-            {
-                foreach (var task in tasks)
-                {
-                    task.Priority = db.PriorityDb.Get(x => x.PriorityId == task.PriorityId).FirstOrDefault();
-                    task.User = db.UserDb.Get(x => x.UserId == task.UserId).FirstOrDefault();
-                }
-                ViewBag.Count = "notnull";
-            }
-            else
-            {
-                ViewBag.Count = "";
-            }
-            return View(tasks);
-        }
+        //[HttpGet]
+        //public IActionResult TasksList()
+        //{
+        //    //List<Task> tasks = db.TaskDb.Get().Where(x=>x.User.Email == User.Identity.Name).ToList();
+        //    //if (tasks.Count != 0)
+        //    //{
+        //    //    foreach (var task in tasks)
+        //    //    {
+        //    //        task.Priority = db.PriorityDb.Get(x => x.PriorityId == task.PriorityId).FirstOrDefault();
+        //    //        task.User = db.UserDb.Get(x => x.UserId == task.UserId).FirstOrDefault();
+        //    //    }
+        //    //    ViewBag.Count = "notnull";
+        //    //}
+        //    //else
+        //    //{
+        //    //    ViewBag.Count = "";
+        //    //}
+        //    //return View(tasks);
+        //}
 
         [HttpPost]
         public IActionResult DeleteTask(int id)

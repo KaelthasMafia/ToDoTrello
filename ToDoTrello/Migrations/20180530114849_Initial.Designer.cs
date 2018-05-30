@@ -11,8 +11,8 @@ using System;
 namespace ToDoTrello.Migrations
 {
     [DbContext(typeof(ToDoTrelloContext))]
-    [Migration("20180529154718_UserId")]
-    partial class UserId
+    [Migration("20180530114849_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,8 @@ namespace ToDoTrello.Migrations
                     b.Property<int>("PriorityId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("PriorityName");
+                    b.Property<string>("PriorityName")
+                        .IsRequired();
 
                     b.HasKey("PriorityId");
 
@@ -38,11 +39,13 @@ namespace ToDoTrello.Migrations
                     b.Property<int>("ProjectId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<bool>("IsArchived");
 
-                    b.Property<string>("ProjectName");
+                    b.Property<string>("ProjectName")
+                        .IsRequired();
 
                     b.HasKey("ProjectId");
 
@@ -54,11 +57,28 @@ namespace ToDoTrello.Migrations
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("RoleName");
+                    b.Property<string>("RoleName")
+                        .IsRequired();
 
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("BOL.Models.Stage", b =>
+                {
+                    b.Property<int>("StageId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ProjectId");
+
+                    b.Property<string>("StageName");
+
+                    b.HasKey("StageId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Stages");
                 });
 
             modelBuilder.Entity("BOL.Models.Subscribe", b =>
@@ -70,33 +90,15 @@ namespace ToDoTrello.Migrations
 
                     b.Property<int>("ProjectId");
 
-                    b.Property<int>("StatusId");
-
-                    b.Property<int?>("SubStatusId");
-
                     b.Property<int>("UserId");
 
                     b.HasKey("SubscribeId");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("SubStatusId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Subscribes");
-                });
-
-            modelBuilder.Entity("BOL.Models.SubStatus", b =>
-                {
-                    b.Property<int>("SubStatusId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("SubStatusName");
-
-                    b.HasKey("SubStatusId");
-
-                    b.ToTable("SubStatuses");
                 });
 
             modelBuilder.Entity("BOL.Models.Task", b =>
@@ -104,21 +106,23 @@ namespace ToDoTrello.Migrations
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<int>("PriorityId");
 
-                    b.Property<int>("ProjectId");
+                    b.Property<int>("StageId");
 
-                    b.Property<string>("TaskName");
+                    b.Property<string>("TaskName")
+                        .IsRequired();
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("TaskId");
 
                     b.HasIndex("PriorityId");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("StageId");
 
                     b.HasIndex("UserId");
 
@@ -130,13 +134,17 @@ namespace ToDoTrello.Migrations
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<int>("RoleId");
 
@@ -147,16 +155,40 @@ namespace ToDoTrello.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BOL.Models.Work", b =>
+                {
+                    b.Property<int>("WorkId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsUserOwner");
+
+                    b.Property<int>("TaskId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("WorkId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Works");
+                });
+
+            modelBuilder.Entity("BOL.Models.Stage", b =>
+                {
+                    b.HasOne("BOL.Models.Project", "Project")
+                        .WithMany("Stages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("BOL.Models.Subscribe", b =>
                 {
                     b.HasOne("BOL.Models.Project", "Project")
                         .WithMany("Subscribes")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BOL.Models.SubStatus", "SubStatus")
-                        .WithMany("Subscribes")
-                        .HasForeignKey("SubStatusId");
 
                     b.HasOne("BOL.Models.User", "User")
                         .WithMany("Subscribes")
@@ -171,15 +203,14 @@ namespace ToDoTrello.Migrations
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BOL.Models.Project", "Project")
+                    b.HasOne("BOL.Models.Stage", "Stage")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
+                        .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BOL.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("BOL.Models.User")
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BOL.Models.User", b =>
@@ -187,6 +218,19 @@ namespace ToDoTrello.Migrations
                     b.HasOne("BOL.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BOL.Models.Work", b =>
+                {
+                    b.HasOne("BOL.Models.Task", "Task")
+                        .WithMany("Works")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BOL.Models.User", "User")
+                        .WithMany("Works")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

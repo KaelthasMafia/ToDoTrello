@@ -34,5 +34,9 @@ namespace BOL.Models
         public virtual Role Role { get; set; }
 
         public virtual List<Subscribe> Subscribes { get; set; }
+        
+        public virtual List<Work> Works { get; set; }
+
+        public virtual List<Task> Tasks { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace ToDoTrello.Migrations
                 {
                     PriorityId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PriorityName = table.Column<string>(nullable: true)
+                    PriorityName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,9 +28,9 @@ namespace ToDoTrello.Migrations
                 {
                     ProjectId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: false),
                     IsArchived = table.Column<bool>(nullable: false),
-                    ProjectName = table.Column<string>(nullable: true)
+                    ProjectName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,7 +43,7 @@ namespace ToDoTrello.Migrations
                 {
                     RoleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleName = table.Column<string>(nullable: true)
+                    RoleName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,40 +51,19 @@ namespace ToDoTrello.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubStatuses",
+                name: "Stages",
                 columns: table => new
                 {
-                    SubStatusId = table.Column<int>(nullable: false)
+                    StageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SubStatusName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubStatuses", x => x.SubStatusId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tasks",
-                columns: table => new
-                {
-                    TaskId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true),
-                    PriorityId = table.Column<int>(nullable: false),
                     ProjectId = table.Column<int>(nullable: false),
-                    TaskName = table.Column<string>(nullable: true)
+                    StageName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.TaskId);
+                    table.PrimaryKey("PK_Stages", x => x.StageId);
                     table.ForeignKey(
-                        name: "FK_Tasks_Priorities_PriorityId",
-                        column: x => x.PriorityId,
-                        principalTable: "Priorities",
-                        principalColumn: "PriorityId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Tasks_Projects_ProjectId",
+                        name: "FK_Stages_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
@@ -97,10 +76,10 @@ namespace ToDoTrello.Migrations
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -122,8 +101,6 @@ namespace ToDoTrello.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsUserOwner = table.Column<bool>(nullable: false),
                     ProjectId = table.Column<int>(nullable: false),
-                    StatusId = table.Column<int>(nullable: false),
-                    SubStatusId = table.Column<int>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -136,12 +113,6 @@ namespace ToDoTrello.Migrations
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Subscribes_SubStatuses_SubStatusId",
-                        column: x => x.SubStatusId,
-                        principalTable: "SubStatuses",
-                        principalColumn: "SubStatusId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Subscribes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
@@ -149,15 +120,77 @@ namespace ToDoTrello.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    TaskId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: false),
+                    PriorityId = table.Column<int>(nullable: false),
+                    StageId = table.Column<int>(nullable: false),
+                    TaskName = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.TaskId);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Priorities_PriorityId",
+                        column: x => x.PriorityId,
+                        principalTable: "Priorities",
+                        principalColumn: "PriorityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Stages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "Stages",
+                        principalColumn: "StageId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Works",
+                columns: table => new
+                {
+                    WorkId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsUserOwner = table.Column<bool>(nullable: false),
+                    TaskId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Works", x => x.WorkId);
+                    table.ForeignKey(
+                        name: "FK_Works_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Works_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stages_ProjectId",
+                table: "Stages",
+                column: "ProjectId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Subscribes_ProjectId",
                 table: "Subscribes",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscribes_SubStatusId",
-                table: "Subscribes",
-                column: "SubStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscribes_UserId",
@@ -170,14 +203,29 @@ namespace ToDoTrello.Migrations
                 column: "PriorityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_ProjectId",
+                name: "IX_Tasks_StageId",
                 table: "Tasks",
-                column: "ProjectId");
+                column: "StageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_UserId",
+                table: "Tasks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Works_TaskId",
+                table: "Works",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Works_UserId",
+                table: "Works",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -186,16 +234,19 @@ namespace ToDoTrello.Migrations
                 name: "Subscribes");
 
             migrationBuilder.DropTable(
+                name: "Works");
+
+            migrationBuilder.DropTable(
                 name: "Tasks");
 
             migrationBuilder.DropTable(
-                name: "SubStatuses");
+                name: "Priorities");
+
+            migrationBuilder.DropTable(
+                name: "Stages");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Priorities");
 
             migrationBuilder.DropTable(
                 name: "Projects");
