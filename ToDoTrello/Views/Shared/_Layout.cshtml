@@ -28,7 +28,7 @@
                 </button>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@User.Identity.Name</a>
+                    <a asp-area="" asp-controller="User" asp-action="ViewProfile" class="navbar-brand">@User.Identity.Name</a>
                 }
                 else
                 {

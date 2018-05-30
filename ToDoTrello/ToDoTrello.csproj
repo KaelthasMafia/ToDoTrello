@@ -18,8 +18,4 @@
     <ProjectReference Include="..\BOL\BOL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
 </Project>

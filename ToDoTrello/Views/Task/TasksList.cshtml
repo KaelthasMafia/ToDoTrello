@@ -1,68 +1,53 @@
 ﻿@model IEnumerable<BOL.Models.Task>
 
 @{
-    ViewData["Title"] = "Tasks list";
+    ViewData["Title"] = "TasksList";
 }
 
-<h2>Tasks list</h2>
+<h2>Tasks List</h2>
 
 <p>
-    <a asp-controller="Task" asp-action="CreateTask">Create new Task</a>
+    <a asp-action="Create">Create New</a>
 </p>
-@if (ViewBag.Count == "notnull")
-{
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
         <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaskName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaskId)
+                @Html.DisplayNameFor(model => model.Priority)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaskName)
+                @Html.DisplayNameFor(model => model.Stage)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PriorityId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectId)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>*@
             <th></th>
         </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PriorityId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectId)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>*@
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stage.StageId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TaskId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TaskId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TaskId">Delete</a>
+            </td>
+        </tr>
 }
+    </tbody>
+</table>

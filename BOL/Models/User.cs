@@ -8,11 +8,12 @@ namespace BOL.Models
 {
     public class User
     {
-        [UIHint("HiddenInput")]
+        [ScaffoldColumn(false)]
         public int UserId { get; set; }
 
         [Required]
         [DisplayName("Email")]
+        [Editable(false)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 

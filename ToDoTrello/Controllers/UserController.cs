@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BOL;
 using BOL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ToDoTrello.Controllers
 {
@@ -17,6 +18,14 @@ namespace ToDoTrello.Controllers
         public IActionResult ViewProfile()
         {
             User user = db.UserDb.Get(x => x.Email == User.Identity.Name).FirstOrDefault();
+            var roles = db.RoleDb.Get();
+            List<string> roleNames = new List<String>();
+            foreach (var role in roles)
+            {
+                roleNames.Add(role.RoleName);
+            }
+            SelectList selectRoleNames = new SelectList(roleNames);
+            ViewBag.RoleName = selectRoleNames;
             return View(user);
         }
     }

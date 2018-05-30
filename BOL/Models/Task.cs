@@ -8,7 +8,7 @@ namespace BOL.Models
 {
     public class Task
     {
-        [UIHint("HiddenInput")]
+        [ScaffoldColumn(false)]
         public int TaskId { get; set; }
 
         [Required]

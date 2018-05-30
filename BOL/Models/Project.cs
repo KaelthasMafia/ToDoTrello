@@ -8,6 +8,7 @@ namespace BOL.Models
 {
     public class Project
     {
+        [ScaffoldColumn(false)]
         public int ProjectId { get; set; }
 
         [Required]
@@ -19,6 +20,7 @@ namespace BOL.Models
         [UIHint("MultilineText")]
         public string Description { get; set; }
 
+        [UIHint("HiddenInput")]
         public bool IsArchived { get; set; }
 
         public virtual List<Subscribe> Subscribes { get; set; }

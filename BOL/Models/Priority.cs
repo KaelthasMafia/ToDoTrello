@@ -8,7 +8,7 @@ namespace BOL.Models
 {
     public class Priority
     {
-        [UIHint("HiddenInput")]
+        [ScaffoldColumn(false)]
         public int PriorityId { get; set; }
 
         [Required]

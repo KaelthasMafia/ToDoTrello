@@ -8,7 +8,7 @@ namespace BOL.Models
 {
     public class Role
     {
-        [UIHint("HiddenInput")]
+        [ScaffoldColumn(false)]
         public int RoleId { get; set; }
 
         [Required]
