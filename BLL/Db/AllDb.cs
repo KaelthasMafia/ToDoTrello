@@ -15,6 +15,8 @@ namespace BLL.Db
             SubscribeDb = new SubscribeDb(context);
             TaskDb = new TaskDb(context);
             UserDb = new UserDb(context);
+            WorkDb = new WorkDb(context);
+            StageDb = new StageDb(context);
         }
 
         public PriorityDb PriorityDb { get; set; }
@@ -28,5 +30,9 @@ namespace BLL.Db
         public TaskDb TaskDb { get; set; }
 
         public UserDb UserDb { get; set; }
+
+        public StageDb StageDb { get; set; }
+
+        public WorkDb WorkDb { get; set; }
     }
 }
